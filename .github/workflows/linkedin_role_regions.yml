@@ -36,8 +36,6 @@ jobs:
       - id: plan
         env:
           ROLE: ${{ inputs.role }}
-        env:
-          ROLE: ${{ inputs.role }}
           STATE_MODE: ${{ inputs.state_split_mode || 'all' }}
         run: |
           python3 dashboard/linkedin/task_pipeline.py plan --phase states --state-mode "$STATE_MODE" --groups 51 --search-terms "$ROLE"
