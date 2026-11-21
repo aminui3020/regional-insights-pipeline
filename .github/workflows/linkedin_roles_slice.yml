@@ -20,7 +20,7 @@ on:
         default: 23
       post_time:
         type: string
-        default: week
+        default: "2weeks"
       roles:
         type: string
         default: ""
@@ -78,9 +78,9 @@ on:
       post_time:
         description: "How far back to look for jobs"
         required: false
-        default: "week"
+        default: "2weeks"
         type: choice
-        options: [day, week, 3week, month, any]
+        options: [2weeks, week, day, month, any]
       roles:
         description: "Comma-separated filters within this role range; blank runs the whole range."
         required: false
@@ -122,7 +122,7 @@ jobs:
     uses: ./.github/workflows/linkedin_role_regions.yml
     with:
       role: ${{ matrix.role }}
-      post_time: ${{ inputs.post_time || 'week' }}
+      post_time: ${{ inputs.post_time || '2weeks' }}
       resume_run_id: ${{ inputs.resume_run_id }}
       parallelism: ${{ inputs.shards || '8' }}
 

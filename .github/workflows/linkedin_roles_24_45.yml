@@ -37,9 +37,9 @@ on:
       post_time:
         description: "How far back to look for jobs"
         required: false
-        default: week
+        default: "2weeks"
         type: choice
-        options: [day, week, 3week, month, any]
+        options: [2weeks, week, day, month, any]
       roles:
         description: "Comma-separated filters within roles 24-44; blank runs the whole range."
         required: false
@@ -60,7 +60,7 @@ jobs:
       role_start: 24
       role_end: 44
       state_split_mode: ${{ inputs.state_split_mode || 'all' }}
-      post_time: ${{ inputs.post_time || 'week' }}
+      post_time: ${{ inputs.post_time || '2weeks' }}
       roles: ${{ inputs.roles }}
       shards: ${{ inputs.shards || '8' }}
     secrets: inherit

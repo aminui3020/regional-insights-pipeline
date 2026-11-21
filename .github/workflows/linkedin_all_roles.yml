@@ -26,8 +26,8 @@ on:
       post_time:
         description: 'Publication window'
         type: choice
-        default: week
-        options: [day, week, 3week, month, any]
+        default: "2weeks"
+        options: [2weeks, week, day, month, any]
       shards:
         description: 'Maximum simultaneous region runners'
         type: choice

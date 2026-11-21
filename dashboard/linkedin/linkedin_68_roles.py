@@ -244,6 +244,9 @@ POST_TIME_MAP: dict[str, int | None] = {
     "3day":   72,
     "week":   168,
     "2week":  336,
+    "2weeks": 336,
+    "14day":  336,
+    "14days": 336,
     "3week":  504,
     "month":  720,
     "any":    None,
@@ -1120,8 +1123,8 @@ def main() -> None:
     parser.add_argument(
         "--post-time",
         choices=list(POST_TIME_MAP.keys()),
-        default="week",
-        help="How recent jobs must be (default: week = last 7 days)",
+        default="2weeks",
+        help="How recent jobs must be (default: 2weeks = last 14 days)",
     )
     parser.add_argument(
         "--location",
