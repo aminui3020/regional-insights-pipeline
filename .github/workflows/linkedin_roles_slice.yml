@@ -112,7 +112,7 @@ jobs:
           python3 dashboard/linkedin/task_pipeline.py plan --phase national \
             --role-start "$ROLE_START" --role-end "$ROLE_END" --roles "$ROLE_FILTER" --search-terms "$SEARCH_TERMS"
 
-  scrape:
+  telemetry:
     needs: prepare
     strategy:
       fail-fast: false
@@ -129,7 +129,7 @@ jobs:
 
   # -- Merge shards, enrich JDs, build Excel ----------------------------------
   deliver:
-    needs: [prepare, scrape]
+    needs: [prepare, telemetry]
     runs-on: ubuntu-latest
     if: always() && needs.prepare.result == 'success'
 
@@ -356,7 +356,7 @@ jobs:
         if: always()
         env:
           ROLE_PLAN: ${{ needs.prepare.outputs.matrix }}
-          STATE_PLAN_RESULT: ${{ needs.scrape.result }}
+          STATE_PLAN_RESULT: ${{ needs.telemetry.result }}
           MERGE_RESULT: ${{ steps.merge.outcome }}
         run: |
           python3 dashboard/linkedin/task_pipeline.py report --root scraped_data --output crawl_progress.json \

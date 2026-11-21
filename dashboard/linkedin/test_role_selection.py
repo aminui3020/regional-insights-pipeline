@@ -101,18 +101,21 @@ class RoleSelectionTests(unittest.TestCase):
         self.assertEqual(inputs['roles']['default'].split(','),
                          ['procurement', 'commodity', 'category', 'buyer', 'purchasing', 'Sourcing'])
         self.assertEqual(inputs['state_split_mode']['default'], 'all')
-        self.assertIn('inputs.roles', procurement['jobs']['scrape']['with']['search_terms'])
-        self.assertNotIn('state_split_terms', procurement['jobs']['scrape']['with'])
+        job_key = 'telemetry' if 'telemetry' in procurement['jobs'] else 'scrape'
+        self.assertIn('inputs.roles', procurement['jobs'][job_key]['with']['search_terms'])
+        self.assertNotIn('state_split_terms', procurement['jobs'][job_key]['with'])
         for name in ['linkedin_roles_slice.yml', 'linkedin_roles_24_45.yml', 'linkedin_roles_46_68.yml']:
             item = workflow(name)
             mode = item['on']['workflow_dispatch']['inputs']['state_split_mode']
             self.assertEqual(mode['options'], ['all', 'auto', 'off'])
             if name != 'linkedin_roles_slice.yml':
-                self.assertIn('inputs.state_split_mode', item['jobs']['scrape']['with']['state_split_mode'])
+                item_job = 'telemetry' if 'telemetry' in item['jobs'] else 'scrape'
+                self.assertIn('inputs.state_split_mode', item['jobs'][item_job]['with']['state_split_mode'])
         shared = workflow('linkedin_roles_slice.yml')
+        shared_job = 'telemetry' if 'telemetry' in shared['jobs'] else 'scrape'
         self.assertIn('state_split_mode', shared['on']['workflow_call']['inputs'])
-        self.assertIn('linkedin_role_regions.yml', shared['jobs']['scrape']['uses'])
-        self.assertEqual(shared['jobs']['scrape']['strategy']['max-parallel'], '2')
+        self.assertIn('linkedin_role_regions.yml', shared['jobs'][shared_job]['uses'])
+        self.assertEqual(shared['jobs'][shared_job]['strategy']['max-parallel'], '2')
 
     def test_screenshot_additions_are_unique_and_in_the_last_workflow(self):
         import yaml
@@ -125,7 +128,8 @@ class RoleSelectionTests(unittest.TestCase):
         self.assertEqual([roles[i-1] for i in [1, 23, 44, 67]],
                          ['Senior Commodity Manager', 'Senior Procurement Consultant', 'Procurement Buyer', 'Purchasing Agent'])
         workflow = yaml.load((ROOT / '.github/workflows/linkedin_roles_46_68.yml').read_text(), Loader=yaml.BaseLoader)
-        self.assertEqual(workflow['jobs']['scrape']['with']['role_end'], '79')
+        wf_job = 'telemetry' if 'telemetry' in workflow['jobs'] else 'scrape'
+        self.assertEqual(workflow['jobs'][wf_job]['with']['role_end'], '79')
         filters = workflow['on']['workflow_dispatch']['inputs']['roles']['default'].split(',')
         self.assertEqual(select_roles(roles, filters=filters, start_idx=45, end_idx=79), roles[44:])
 

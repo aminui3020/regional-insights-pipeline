@@ -53,7 +53,7 @@ on:
         options: ["4", "8", "12", "16"]
 
 jobs:
-  scrape:
+  telemetry:
     uses: ./.github/workflows/linkedin_roles_slice.yml
     with:
       resume_run_id: ${{ inputs.resume_run_id }}

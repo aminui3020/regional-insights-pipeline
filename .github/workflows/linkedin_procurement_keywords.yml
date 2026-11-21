@@ -47,7 +47,7 @@ on:
         options: [2weeks, week, day, month, any]
 
 jobs:
-  scrape:
+  telemetry:
     uses: ./.github/workflows/linkedin_roles_slice.yml
     with:
       resume_run_id: ${{ inputs.resume_run_id }}
