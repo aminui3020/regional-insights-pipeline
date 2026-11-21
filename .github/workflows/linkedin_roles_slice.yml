@@ -74,7 +74,7 @@ on:
         required: false
         default: all
         type: choice
-        options: [all, auto]
+        options: [all, auto, off]
       post_time:
         description: "How far back to look for jobs"
         required: false
@@ -123,6 +123,7 @@ jobs:
     with:
       role: ${{ matrix.role }}
       post_time: ${{ inputs.post_time || '2weeks' }}
+      state_split_mode: ${{ inputs.state_split_mode || 'all' }}
       resume_run_id: ${{ inputs.resume_run_id }}
       parallelism: ${{ inputs.shards || '8' }}
 

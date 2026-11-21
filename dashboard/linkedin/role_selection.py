@@ -2,9 +2,11 @@
 
 
 def should_split_states(role, location, capped, *, mode='auto', terms=None):
-    """All roles can expand in auto mode; explicit all overrides legacy allowlists."""
-    if mode not in {'auto', 'all'}:
-        raise ValueError('State split mode must be auto or all')
+    """All roles can expand in auto mode; explicit all overrides legacy allowlists; off disables state splitting."""
+    if mode not in {'auto', 'all', 'off'}:
+        raise ValueError('State split mode must be auto, all, or off')
+    if mode == 'off':
+        return False
     if location.strip().casefold() not in {'united states', 'usa', 'us', 'united states of america'}:
         return False
     if mode == 'all':

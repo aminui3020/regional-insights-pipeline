@@ -9,6 +9,9 @@ on:
       post_time:
         type: string
         required: true
+      state_split_mode:
+        type: string
+        default: 'all'
       resume_run_id:
         type: string
         default: ''
@@ -33,8 +36,11 @@ jobs:
       - id: plan
         env:
           ROLE: ${{ inputs.role }}
+        env:
+          ROLE: ${{ inputs.role }}
+          STATE_MODE: ${{ inputs.state_split_mode || 'all' }}
         run: |
-          python3 dashboard/linkedin/task_pipeline.py plan --phase states --state-mode all --groups 51 --search-terms "$ROLE"
+          python3 dashboard/linkedin/task_pipeline.py plan --phase states --state-mode "$STATE_MODE" --groups 51 --search-terms "$ROLE"
 
   region:
     needs: plan

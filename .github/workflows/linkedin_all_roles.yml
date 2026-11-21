@@ -23,6 +23,12 @@ on:
         description: 'Blank runs all 79 catalog titles; otherwise comma-separated selection'
         type: string
         default: ''
+      state_split_mode:
+        description: "auto: split capped nationwide searches by US state; all: always search every US state; off: disable state splitting"
+        required: false
+        default: all
+        type: choice
+        options: [all, auto, off]
       post_time:
         description: 'Publication window'
         type: choice
@@ -51,5 +57,5 @@ jobs:
       roles: ${{ inputs.roles }}
       post_time: ${{ inputs.post_time }}
       shards: ${{ inputs.shards }}
-      state_split_mode: all
+      state_split_mode: ${{ inputs.state_split_mode || 'all' }}
       resume_run_id: ${{ inputs.resume_run_id }}

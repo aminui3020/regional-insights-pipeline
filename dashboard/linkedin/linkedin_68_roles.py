@@ -1209,7 +1209,7 @@ def main() -> None:
         help="Comma-separated queries allowed to continue state by state after LinkedIn's 1,000-result cap",
     )
     parser.add_argument(
-        '--state-split-mode', choices=['auto', 'all'], default='auto',
+        '--state-split-mode', choices=['auto', 'all', 'off'], default='auto',
         help='auto: expand capped US-wide queries; all: always search every US state for every selected query',
     )
     parser.add_argument(
@@ -1357,7 +1357,7 @@ def main() -> None:
                 us_wide = args.location.strip().lower() in ("united states", "usa", "us", "united states of america")
                 if stats["capped"] and not us_wide:
                     capped_parts.append("not split: the search is not US-wide")
-                state_split_enabled = args.state_split_mode == 'all' or state_split_terms is None or role.casefold() in state_split_terms
+                state_split_enabled = args.state_split_mode != 'off' and (args.state_split_mode == 'all' or state_split_terms is None or role.casefold() in state_split_terms)
                 if stats["capped"] and us_wide and not state_split_enabled:
                     capped_parts.append("state split disabled for this query")
                 split_by_state = should_split_states(role, args.location, stats['capped'],

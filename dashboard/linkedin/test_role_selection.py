@@ -89,6 +89,8 @@ class RoleSelectionTests(unittest.TestCase):
         self.assertEqual(sum(not shard for shard in shards), 3)
         with self.assertRaises(ValueError):
             should_split_states('buyer', 'USA', True, mode='disabled')
+        self.assertFalse(should_split_states('buyer', 'USA', True, mode='off'))
+        self.assertFalse(should_split_states('buyer', 'USA', False, mode='off'))
 
     def test_workflows_pass_role_selection_and_state_split_mode(self):
         import yaml
@@ -104,7 +106,7 @@ class RoleSelectionTests(unittest.TestCase):
         for name in ['linkedin_roles_slice.yml', 'linkedin_roles_24_45.yml', 'linkedin_roles_46_68.yml']:
             item = workflow(name)
             mode = item['on']['workflow_dispatch']['inputs']['state_split_mode']
-            self.assertEqual(mode['options'], ['all', 'auto'])
+            self.assertEqual(mode['options'], ['all', 'auto', 'off'])
             if name != 'linkedin_roles_slice.yml':
                 self.assertIn('inputs.state_split_mode', item['jobs']['scrape']['with']['state_split_mode'])
         shared = workflow('linkedin_roles_slice.yml')

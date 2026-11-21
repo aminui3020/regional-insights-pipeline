@@ -41,6 +41,9 @@ def plan(roles, phase, mode='auto', manifests=(), groups=5):
         if phase == 'national':
             tasks.append({'id': task_id(role, phase), 'role': role, 'kind': phase, 'locations': ['United States']})
             continue
+        if mode == 'off':
+            tasks.append({'id': task_id(role, 'national'), 'role': role, 'kind': 'national', 'locations': ['United States']})
+            continue
         previous = summaries.get(role.casefold())
         # A missing/failed national task must never prevent geographic expansion.
         if mode == 'auto' and previous and previous.get('complete') and not previous.get('capped'):
@@ -359,7 +362,7 @@ def main():
     planning.add_argument('--role-end', type=int, default=23)
     planning.add_argument('--roles', default='')
     planning.add_argument('--search-terms', default='')
-    planning.add_argument('--state-mode', choices=['auto', 'all'], default='auto')
+    planning.add_argument('--state-mode', choices=['auto', 'all', 'off'], default='auto')
     planning.add_argument('--previous', default='')
     planning.add_argument('--groups', type=int, default=5)
     running = sub.add_parser('crawl')
