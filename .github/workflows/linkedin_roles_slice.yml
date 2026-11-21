@@ -367,7 +367,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: linkedin-raw-and-checkpoints
-          retention-days: 30
+          retention-days: 7
           path: |
             ${{ steps.root.outputs.dir }}/linkedin/linkedin_jobs/linkedin_jobs_raw.csv
             ${{ steps.root.outputs.dir }}/linkedin/linkedin_jobs/linkedin_jobs_all.csv
@@ -379,7 +379,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: ${{ inputs.search_terms != '' && 'linkedin-jobs-procurement-keywords' || format('linkedin-jobs-{0}-{1}', env.ROLE_START, env.ROLE_END) }}
-          retention-days: 30
+          retention-days: 7
           path: ${{ steps.root.outputs.dir }}/deliverables/*.xlsx
 
   continue:
