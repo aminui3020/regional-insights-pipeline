@@ -28,7 +28,7 @@ on:
         required: false
         default: all
         type: choice
-        options: [all, auto, off]
+        options: [all, auto, "off"]
       post_time:
         description: 'Publication window'
         type: choice
